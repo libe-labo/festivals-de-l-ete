@@ -1,57 +1,49 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Roboto:400,700,700italic,400italic);
-
-html {
-  font-family: 'Roboto Slab', serif;
+/*
+** Fonts
+*/
+@font-face {
+    font-family: "Proxima Nova Regular";
+    font-weight: normal;
+    font-style: normal;
+    src: url('http://s1.libe.com/font/license/27522D_B_0.eot?6f3b7a3a38b9')         format("eot");
+    src: url('http://s1.libe.com/font/license/27522D_B_0.eot?#iefix')               format("embedded-opentype"),
+         url('http://s1.libe.com/font/license/27522D_B_0.woff?973092db2463')        format("woff"),
+         url('http://s1.libe.com/font/license/27522D_B_0.ttf?326b4ed42028')         format("truetype"),
+         url('http://s1.libe.com/font/license/27522D_B_0.svg#Proxima Nova Regular') format("svg");
 }
 
-[layout=row] {
-  flex-direction: row;
+@font-face {
+    font-family: "Proxima Nova Regular Bold";
+    font-weight: normal;
+    font-style: normal;
+    src: url('http://s1.libe.com/font/license/27522D_C_0.eot?7651b0835130')              format("eot");
+    src: url('http://s1.libe.com/font/license/27522D_C_0.eot?#iefix')                    format("embedded-opentype"),
+         url('http://s1.libe.com/font/license/27522D_C_0.woff?1d97b03ffbee')             format("woff"),
+         url('http://s1.libe.com/font/license/27522D_C_0.ttf?c4b6119d8273')              format("truetype"),
+         url('http://s1.libe.com/font/license/27522D_C_0.svg#Proxima Nova Regular Bold') format("svg");
+}
+
+@font-face {
+    font-family: "Trade Gothic Bold Cond";
+    font-weight: normal;
+    font-style: normal;
+    src: url('http://s1.libe.com/font/license/tradegothicltstd-bdcn20.eot?1669fae0818a')           format("eot");
+    src: url('http://s1.libe.com/font/license/tradegothicltstd-bdcn20.eot?#iefix')                 format("embedded-opentype"),
+         url('http://s1.libe.com/font/license/tradegothicltstd-bdcn20.woff?7f6be2b8eca9')          format("woff"),
+         url('http://s1.libe.com/font/license/tradegothicltstd-bdcn20.ttf?5dda5c1e2946')           format("truetype"),
+         url('http://s1.libe.com/font/license/tradegothicltstd-bdcn20.svg#Trade Gothic Bold Cond') format("svg");
+}
+
+
+html {
+    font-family: 'Proxima Nova Regular', sans-serif;
 }
 
 .browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
-}
-
-.thumbnail {
-  height: 200px;
-
-  img.pull-right {
-    width: 50px;
-  }
-}
-
-md-toolbar.md-default-theme {
-  background-color: black;
-}
-
-section.jumbotron {
-  margin-bottom: 30px;
-  padding: 1px 30px;
-  background-color: #5aadbb;
-  text-align: center;
-
-  color: white;
-
-  h1 {
-    font-size: 3em;
-  }
-}
-
-.techs {
-  display: flex;
-  flex-flow: row wrap;
-
-  md-card {
-    width: 30%;
-
-    img.pull-right {
-      float: right;
-      width: 50px;
-    }
-  }
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
