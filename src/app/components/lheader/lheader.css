@@ -59,6 +59,10 @@
     float: none;
 }
 
+section#main-content {
+    margin-top: 50px;
+}
+
 @media screen and (max-width: 995px) {
     .wrapper {
         width: 100%;
