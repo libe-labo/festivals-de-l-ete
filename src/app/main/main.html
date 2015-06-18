@@ -1,0 +1,11 @@
+<div layout="row" layout-fill>
+    <div flex>
+        <md-toolbar layout-padding layout-align="center">Régions</md-toolbar>
+        <leaflet center="map.center" markers="map.markers" height="480px" width="640px"></leaflet>
+    </div>
+    <div flex layout="row">
+        <ng-include src="'app/components/categories/categories.html'" flex></ng-include>
+        <div flex><md-toolbar layout-padding layout-align="center">Agenda</md-toolbar></div>
+        <div flex="50"></div>
+    </div>
+</div>
