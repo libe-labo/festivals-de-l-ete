@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('festivals', ['ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ngMaterial', 'lheader'])
+angular.module('festivals', ['ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router',
+                             'ngMaterial', 'lheader', 'leaflet-directive'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider.state('home', {
             url: '/',
