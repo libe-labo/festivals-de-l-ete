@@ -10,7 +10,7 @@ angular.module('festivals').controller('CategoriesCtrl', function ($scope, $root
     ** Handle buttons
     */
 
-    var selectedCategory;
+    var selectedCategory = 'Tous';
 
     $scope.selectCategory = function(category) {
         if (_.contains($scope.categories, category)) {
