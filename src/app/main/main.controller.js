@@ -43,12 +43,16 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     var generateMarkersFromData = function(data) {
         var markers = {};
         _.each(_.groupBy(data, 'town'), function(d, k) {
+            var scope = $scope.$new();
+            scope.names = _.pluck(d, 'name');
             markers[k.replace(/-/g, '_')] = {
                 lng : parseFloat(d[0].lon),
                 lat : parseFloat(d[0].lat),
                 focus : false,
-                message : _.pluck(d, 'name').join(', '),
-                draggable : false
+                draggable : false,
+                message : '<li ng-repeat="name in names">{{ name }}</li>',
+                getMessageScope : (function() { return this; }).bind(scope),
+                compileMessage : true
             };
         });
         return markers;
@@ -83,15 +87,15 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
         leafletData.getMap().then(function(map) {
             var allLons = _.pluck(allData, 'lon'),
                 allLats = _.pluck(allData, 'lat'),
-                bounds = L.latLngBounds(L.latLng(_.min(allLats), _.max(allLons)),
-                                        L.latLng(_.max(allLats), _.min(allLons))),
-                boundsCenter = bounds.getCenter();
+                bounds = L.latLngBounds(L.latLng(_.min(allLats) - 0.5, _.max(allLons) + 0.5),
+                                        L.latLng(_.max(allLats) + 0.5, _.min(allLons) - 0.5)),
+            boundsCenter = bounds.getCenter();
 
-                $scope.map.center = {
-                    lng : boundsCenter.lng,
-                    lat : boundsCenter.lat,
-                    zoom : map.getBoundsZoom(bounds)
-                };
+            $scope.map.center = {
+                lng : boundsCenter.lng,
+                lat : boundsCenter.lat,
+                zoom : map.getBoundsZoom(bounds)
+            };
         });
 
         $scope.festivals = _.clone(allData);
