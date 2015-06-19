@@ -38,15 +38,24 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
         allData = d3.tsv.parse(response.data, function(d) {
             var lonlat = d['Lon,Lat'].split(',');
+            var startDate = d['Début'].split('/');
+            var endDate = d.Fin.split('/');
             return {
                 name : d['Nom du festival'],
                 category : d.Genre,
                 town : d.Commune,
                 lon : lonlat[0],
-                lat : lonlat[1]
+                lat : lonlat[1],
+                startDate : new Date(startDate[2], startDate[1] - 1, startDate[0]),
+                endDate : new Date(endDate[2], endDate[1] - 1, endDate[0]),
+                description : d.Texte,
+                website : d['Site Web'],
+                phoneNumber : d['Téléphone']
             };
         });
 
-        $scope.map.markers = generateMarkersFromData(allData);
+        $scope.festivals = _.clone(allData);
+
+        $scope.map.markers = generateMarkersFromData($scope.festivals);
     });
 });
