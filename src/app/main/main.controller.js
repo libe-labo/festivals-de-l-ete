@@ -26,6 +26,16 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             lat : 47.85,
             zoom : 5
         },
+        tiles : {
+            url : 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+            type : 'sxyz',
+            options : {
+                opacity : 1,
+                detectRetina : true,
+                reuseTile : true,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+            }
+        },
         markers : {}
     };
 
