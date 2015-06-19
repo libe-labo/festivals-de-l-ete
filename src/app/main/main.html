@@ -1,11 +1,18 @@
 <div layout="row" layout-fill>
-    <div flex>
+    <div flex layout-fill>
         <md-toolbar layout-padding layout-align="center">Régions</md-toolbar>
         <leaflet center="map.center" markers="map.markers" height="480px" width="640px"></leaflet>
     </div>
-    <div flex layout="row">
+    <div flex layout="row" layout-fill>
         <ng-include src="'app/components/categories/categories.html'" flex></ng-include>
-        <div flex><md-toolbar layout-padding layout-align="center">Agenda</md-toolbar></div>
+        <div flex class="agenda">
+            <md-toolbar layout-padding layout-align="center">Agenda</md-toolbar>
+            <div flex layout="column" class="agenda__list">
+                <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item">
+                    {{ festival.name }}
+                </div>
+            </div>
+        </div>
         <div flex="50"></div>
     </div>
 </div>
