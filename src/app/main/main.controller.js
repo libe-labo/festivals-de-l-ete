@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
+angular.module('festivals').controller('MainCtrl', function ($scope, $http, leafletData) {
     /*
     ** Data
     */
@@ -52,9 +52,9 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
 
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
         allData = d3.tsv.parse(response.data, function(d) {
-            var lonlat = d['Lon,Lat'].split(',');
-            var startDate = d['Début'].split('/');
-            var endDate = d.Fin.split('/');
+            var lonlat = d['Lon,Lat'].split(','),
+                startDate = d['Début'].split('/'),
+                endDate = d.Fin.split('/');
             return {
                 name : d['Nom du festival'],
                 category : d.Genre,
@@ -67,6 +67,21 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
                 website : d['Site Web'],
                 phoneNumber : d['Téléphone']
             };
+        });
+
+
+        leafletData.getMap().then(function(map) {
+            var allLons = _.pluck(allData, 'lon'),
+                allLats = _.pluck(allData, 'lat'),
+                bounds = L.latLngBounds(L.latLng(_.min(allLats), _.max(allLons)),
+                                        L.latLng(_.max(allLats), _.min(allLons))),
+                boundsCenter = bounds.getCenter();
+
+                $scope.map.center = {
+                    lng : boundsCenter.lng,
+                    lat : boundsCenter.lat,
+                    zoom : map.getBoundsZoom(bounds)
+                };
         });
 
         $scope.festivals = _.clone(allData);
