@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
+    /*
+    ** Data
+    */
     var allData;
+    $scope.festivals = [];
 
-    var generateMarkersFromData = function(data) {
-        var markers = {};
-        _.each(_.groupBy(data, 'town'), function(d, k) {
-            markers[k.replace(/-/g, '_')] = {
-                lng : parseFloat(d[0].lon),
-                lat : parseFloat(d[0].lat),
-                focus : false,
-                message : _.pluck(d, 'name').join(', '),
-                draggable : false
-            };
+    // Filter `allData` depending on key / value
+    var filterFestivals = function(key, value) {
+        if (key == null && value == null) {
+            return _.clone(allData);
+        }
+        return _.filter(allData, function(d) {
+            return d[key] === value;
         });
-        return markers;
     };
 
     /*
@@ -29,10 +29,25 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http) {
         markers : {}
     };
 
+    // Creates an array of Leaftlet Markers from an array of festivals
+    var generateMarkersFromData = function(data) {
+        var markers = {};
+        _.each(_.groupBy(data, 'town'), function(d, k) {
+            markers[k.replace(/-/g, '_')] = {
+                lng : parseFloat(d[0].lon),
+                lat : parseFloat(d[0].lat),
+                focus : false,
+                message : _.pluck(d, 'name').join(', '),
+                draggable : false
+            };
+        });
+        return markers;
+    };
+
     $scope.$on('category:change', function(event, category) {
-        $scope.map.markers = generateMarkersFromData(_.filter(allData, function(d) {
-            return category == null ? true : d.category === category;
-        }));
+        // If `category == null` then we want everything
+        $scope.festivals = filterFestivals.apply(this, category == null ? [] : ['category', category]);
+        $scope.map.markers = generateMarkersFromData($scope.festivals);
     });
 
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
