@@ -108,8 +108,8 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
         allData = d3.tsv.parse(response.data, function(d, i) {
             var lonlat = d['Lon,Lat'].split(','),
-                startDate = d['Début'].split('/'),
-                endDate = d.Fin.split('/');
+                startDate = d['Début'].substr(0, 10).split('-'),
+                endDate = d.Fin.substr(0, 10).split('-');
             return {
                 id : i,
                 name : d['Nom du festival'],
@@ -117,17 +117,13 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 town : d.Commune,
                 lon : lonlat[0],
                 lat : lonlat[1],
-                startDate : moment(new Date(startDate[2], startDate[1] - 1, startDate[0])),
-                endDate : moment(new Date(endDate[2], endDate[1] - 1, endDate[0])),
+                startDate : moment(new Date(+startDate[0], (+startDate[1]) - 1, +startDate[2])),
+                endDate : moment(new Date(+endDate[0], (+endDate[1]) - 1, +endDate[2])),
                 description : d.Texte,
                 website : d['Site Web'],
                 phoneNumber : d['Téléphone']
             };
         });
-
-        $scope.festivals = filterFestivals();
-
-        initMap();
 
         var lastDate = moment(_.max(_.pluck(allData, 'endDate')));
 
@@ -135,6 +131,10 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
         if (moment($scope.day).isAfter(lastDate)) {
             $scope.day = lastDate.toDate();
         }
+
+        $scope.festivals = filterFestivals();
+
+        initMap();
     });
 
     /*
