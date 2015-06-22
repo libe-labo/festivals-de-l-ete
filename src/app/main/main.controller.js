@@ -125,7 +125,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             };
         });
 
-        $scope.festivals = _.clone(allData);
+        $scope.festivals = filterFestivals();
 
         initMap();
 
@@ -156,4 +156,24 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             });
         });
     });
+
+    $scope.getColorClass = (function() {
+        var classesMap = {
+            null : 'color-all',
+            undefined : 'color-all',
+            'BD' : 'color-bd',
+            'Cinéma' : 'color-cinema',
+            'Danse' : 'color-danse',
+            'Musique' : 'color-musique',
+            'Littérature' : 'color-litterature',
+            'Photo / Art contemporain' : 'color-photo',
+            'Theâtre / Arts de la rue / Cirque' : 'color-theatre',
+            'Autres' : 'color-autres'
+        };
+        return function() {
+            var classes = {};
+            classes[classesMap[$scope.category]] = true;
+            return classes;
+        };
+    })();
 });

@@ -22,7 +22,8 @@ angular.module('festivals').controller('CategoriesCtrl', function ($scope, $root
 
     $scope.getCategoryClass = function(category) {
         return {
-            'md-primary' : category === selectedCategory
+            'md-primary' : category === selectedCategory,
+            'color-bg' : category === selectedCategory,
         };
     };
 });
