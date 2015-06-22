@@ -30,12 +30,17 @@
                 </div>
             </div>
         </div>
-        <div flex="50" style="background-color: #fff">
+        <div flex="50" style="background-color: #fff" ng-show="selectedFestival!=null">
             <md-toolbar class="color-bg" layout-padding layout-align="center"></md-toolbar>
-            <div layout-padding ng-show="selectedFestival!=null">
+            <div layout-padding>
                 <h2 class="color-fg">{{ selectedFestival.name }}</h2>
+                <span><i class="fa fa-chevron-right color-fg"></i> Du {{ selectedFestival.startDate.format('DD/MM') }} au {{ selectedFestival.endDate.format('DD/MM') }}, {{ selectedFestival.town }}</span><br />
+                <span><i class="fa fa-circle fa-small color-fg"></i> {{ selectedFestival.category }}</span>
                 <p>{{ selectedFestival.description }}</p>
-                <p><a ng-href="{{ selectedFestival.website }}" target="_blank" class="color-fg">{{ selectedFestival.website }}</a></p>
+                <p ng-show="selectedFestival.citation.length > 0">
+                    <span class="color-fg">{{ selectedFestival.citationName }}</span>, {{ selectedFestival.citationSub }} :<br /><em>{{ selectedFestival.citation }}</em>
+                </p>
+                <p><a ng-href="{{ selectedFestival.website }}" target="_blank" class="color-fg">En savoir plus</a></p>
             </div>
         </div>
     </div>
