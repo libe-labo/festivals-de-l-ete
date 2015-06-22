@@ -74,14 +74,15 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             var markers = {};
             _.each(_.groupBy(data, 'town'), function(d, k) {
                 var scope = $scope.$new();
-                scope.names = _.pluck(d, 'name');
+                scope.festivals = _.clone(d);
                 var id = k.replace(/-/g, '_');
                 markers[id] = {
                     lng : parseFloat(d[0].lon),
                     lat : parseFloat(d[0].lat),
                     focus : false,
                     draggable : false,
-                    message : '<li ng-repeat="name in names">{{ name }}</li>',
+                    message : '<li class="popup__item" ng-repeat="festival in festivals" ' +
+                                  'ng-click="$parent.selectFestival(festival.id)">{{ festival.name }}</li>',
                     getMessageScope : (function() { return this; }).bind(scope),
                     compileMessage : true,
                     alt : id,
