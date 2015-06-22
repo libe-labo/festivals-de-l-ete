@@ -7,11 +7,22 @@
         <div flex class="agenda">
             <md-toolbar layout-padding layout-align="center">Agenda</md-toolbar>
             <div flex layout="column" class="agenda__list">
-                <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item">
-                    {{ festival.name }}
+
+                <input type="date" ng-model="day" ng-change="changeDate()" />
+                <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item"
+                     ng-click="selectFestival(festival.id)" layout-padding ng-class="getFestivalClass(festival)">
+                    <span class="agenda__list__item__name">{{ festival.name }}</span>
+                    <span class="agenda__list__item__date"><i class="fa fa-chevron-right"></i></span>
+                    <span class="agenda__list__item__category"><i class="fa fa-circle fa-small"></i> {{ festival.category }}</span>
                 </div>
             </div>
         </div>
-        <div flex="50"></div>
+        <div flex="50">
+            <md-toolbar layout-padding layout-align="center"></md-toolbar>
+            <div layout-padding>
+                <h2>{{ selectedFestival.name }}</h2>
+                <p>{{ selectedFestival.description }}</p>
+            </div>
+        </div>
     </div>
 </div>

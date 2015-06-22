@@ -50,10 +50,39 @@ html {
     height: 100%;
 }
 
+md-toolbar.md-default-theme, .md-button.md-default-theme.md-primary.md-raised {
+    background-color: #c42121;
+}
+
 section#main-content {
     margin: 0;
     height: 100%;
     padding-top: 50px;
+}
+
+.agenda__list__item {
+    cursor: pointer;
+
+    &__name {
+        font-family: "Trade Gothic Bold Cond";
+    }
+
+    > span {
+        display: block;
+        clear: both;
+
+        > i {
+            font-size: .6em;
+        }
+    }
+
+    &.selected, &.selected:hover {
+        background-color: #c42121;
+    }
+
+    &:hover {
+        background-color: lighten(#c42121, 20%)
+    }
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
