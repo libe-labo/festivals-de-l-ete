@@ -50,10 +50,6 @@ html {
     padding: 0.2em 0;
 }
 
-[layout-fill] {
-    height: 100%;
-}
-
 md-toolbar {
     font-family: "Open Sans";
     font-weight: 800;
@@ -111,6 +107,39 @@ section#main-content {
 .popup__item {
     list-style-type: none;
     cursor: pointer;
+}
+
+@media (min-width: 960px) {
+    [layout-fill] {
+        height: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    md-toolbar {
+        min-height: 32px;
+    }
+
+    section#main-content > div {
+        height: 100%;
+    }
+
+    .agenda {
+        height: 50%;
+        min-height: 0px;
+
+        &__wrapper {
+            height: 100%;
+        }
+    }
+
+    md-select {
+        margin: 10px 0;
+        position: relative;
+        top: 0;
+        left: 50%;
+        .transform: translate(-50%, 0);
+    }
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject

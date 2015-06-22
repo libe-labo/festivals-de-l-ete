@@ -1,12 +1,23 @@
 <div layout="row" layout-fill ng-class="getColorClass()">
-    <div flex="40" layout-fill>
+    <div flex="40" layout-fill hide-sm hide-md style="height: 100%">
         <leaflet center="map.center" markers="map.markers" tiles="map.tiles" width="100%" height="100%"></leaflet>
     </div>
-    <div flex layout="row" layout-fill>
-        <ng-include src="'app/components/categories/categories.html'" flex></ng-include>
+    <div flex layout-lg="row" layout-gt-lg="row" layout-fill layout-sm="column" layout-md="column" class="agenda__wrapper">
+        <ng-include src="'app/components/categories/categories.html'" flex hide-sm hide-md></ng-include>
         <div flex class="agenda" layout-fill>
             <md-toolbar class="color-bg" layout-padding layout-align="center center">Agenda</md-toolbar>
-            <div flex class="agenda__list">
+            <div flex class="agenda__list" style="height: 90%">
+                <md-select ng-model="category" hide show-sm show-md>
+                    <md-option ng-value="undefined" ng-selected>Tous</md-option>
+                    <md-option ng-value="'BD'">BD</md-option>
+                    <md-option ng-value="'Cinéma'">Cinéma</md-option>
+                    <md-option ng-value="'Danse'">Danse</md-option>
+                    <md-option ng-value="'Littérature'">Littérature</md-option>
+                    <md-option ng-value="'Musique'">Musique</md-option>
+                    <md-option ng-value="'Photo / Art contemporain'">Photo / Art contemporain</md-option>
+                    <md-option ng-value="'Theâtre / Arts de la rue / Cirque'">Theâtre / Arts de la rue / Cirque</md-option>
+                    <md-option ng-value="'Autres'">Autres</md-option>
+                </md-select>
                 <span class="color-fg agenda__list__title">Aujourd'hui</span>
                 <input type="date" ng-model="day" ng-change="changeDate()" />
                 <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item"
@@ -19,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div flex="50">
+        <div flex="50" style="background-color: #fff">
             <md-toolbar class="color-bg" layout-padding layout-align="center"></md-toolbar>
             <div layout-padding>
                 <h2 class="color-fg">{{ selectedFestival.name }}</h2>
