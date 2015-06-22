@@ -5,7 +5,7 @@
     <div flex layout="row" layout-fill>
         <ng-include src="'app/components/categories/categories.html'" flex></ng-include>
         <div flex class="agenda" layout-fill>
-            <md-toolbar class="color-bg" layout-padding layout-align="center">Agenda</md-toolbar>
+            <md-toolbar class="color-bg" layout-padding layout-align="center center">Agenda</md-toolbar>
             <div flex class="agenda__list">
                 <input type="date" ng-model="day" ng-change="changeDate()" />
                 <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item"
@@ -19,7 +19,7 @@
         <div flex="50">
             <md-toolbar class="color-bg" layout-padding layout-align="center"></md-toolbar>
             <div layout-padding>
-                <h2>{{ selectedFestival.name }}</h2>
+                <h2 class="color-fg">{{ selectedFestival.name }}</h2>
                 <p>{{ selectedFestival.description }}</p>
             </div>
         </div>
