@@ -158,7 +158,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 startDate : moment(new Date(+startDate[0], (+startDate[1]) - 1, +startDate[2])),
                 endDate : moment(new Date(+endDate[0], (+endDate[1]) - 1, +endDate[2])),
                 description : d.Texte,
-                website : d['Site Web'],
+                website : d['Site web'],
                 phoneNumber : d['Téléphone']
             };
         });

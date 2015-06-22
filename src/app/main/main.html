@@ -32,9 +32,10 @@
         </div>
         <div flex="50" style="background-color: #fff">
             <md-toolbar class="color-bg" layout-padding layout-align="center"></md-toolbar>
-            <div layout-padding>
+            <div layout-padding ng-show="selectedFestival!=null">
                 <h2 class="color-fg">{{ selectedFestival.name }}</h2>
                 <p>{{ selectedFestival.description }}</p>
+                <p><a ng-href="{{ selectedFestival.website }}" target="_blank" class="color-fg">{{ selectedFestival.website }}</a></p>
             </div>
         </div>
     </div>
