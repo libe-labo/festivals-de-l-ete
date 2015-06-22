@@ -182,8 +182,10 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     **
     */
     $scope.getFestivalClass = function(festival) {
+        var selected = $scope.selectedFestival != null && festival.id === $scope.selectedFestival.id;
         return {
-            selected : $scope.selectedFestival != null && festival.id === $scope.selectedFestival.id
+            selected : selected,
+            'color-bg' : selected
         };
     };
 

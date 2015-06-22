@@ -41,6 +41,11 @@ md-toolbar {
     font-family: "Open Sans";
     font-weight: 800;
     text-transform: uppercase;
+    box-shadow: none;
+}
+
+button.md-raised, button.md-raised:hover {
+    box-shadow: none !important;
 }
 
 .md-button.md-default-theme > span {
@@ -87,6 +92,10 @@ section#main-content {
             > i {
                 font-size: .6em;
             }
+        }
+
+        &.selected * {
+            color: #fff !important;
         }
     }
 }
