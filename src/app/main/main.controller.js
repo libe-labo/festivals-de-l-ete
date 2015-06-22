@@ -47,7 +47,9 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 opacity : 1,
                 detectRetina : true,
                 reuseTile : true,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">' +
+                             'OpenStreetMap</a> contributors, &copy; ' +
+                             '<a href="http://cartodb.com/attributions">CartoDB</a>'
             }
         },
         markers : {}
