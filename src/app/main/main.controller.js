@@ -6,6 +6,13 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     $scope.category = undefined;
     $scope.day = undefined;
 
+    var allForCategory = function() {
+        if ($scope.category == null) {
+            return allData;
+        }
+        return _.filter(allData, { category : $scope.category });
+    };
+
     // Filter `allData` depending on key / value
     var filterFestivals = function() {
         return _.filter(allData, function(d) {
@@ -23,10 +30,12 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     };
 
     $scope.selectFestival = function(i) {
-        $scope.selectedFestival = _.clone(_.find($scope.festivals, { id : i }));
-        var marker = allMarkers[$scope.selectedFestival.town.replace(/-/g, '_')];
-        if (marker != null && !marker.getPopup()._isOpen) {
-            marker.openPopup();
+        $scope.selectedFestival = _.clone(_.find(allData, { id : i }));
+        if ($scope.selectedFestival != null) {
+            var marker = allMarkers[$scope.selectedFestival.town.replace(/-/g, '_')];
+            if (marker != null && !marker.getPopup()._isOpen) {
+                marker.openPopup();
+            }
         }
     };
 
@@ -63,8 +72,8 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             'BD' : '02',
             'Cinéma' : '03',
             'Danse' : '04',
-            'Musique' : '05',
-            'Littérature' : '06',
+            'Musique' : '06',
+            'Littérature' : '05',
             'Photo / Art contemporain' : '07',
             'Theâtre / Arts de la rue / Cirque' : '08',
             'Autres' : '09'
@@ -72,10 +81,16 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
 
         return function(data) {
             var markers = {};
-            _.each(_.groupBy(data, 'town'), function(d, k) {
+            _.each(_.groupBy(allForCategory(), 'town'), function(d, k) {
                 var scope = $scope.$new();
                 scope.festivals = _.clone(d);
                 var id = k.replace(/-/g, '_');
+                var opacity = 0.1;
+                _.each(d, function(_d) {
+                    if (_.contains(data, _d)) {
+                        opacity = 1;
+                    }
+                });
                 markers[id] = {
                     lng : parseFloat(d[0].lon),
                     lat : parseFloat(d[0].lat),
@@ -86,6 +101,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                     getMessageScope : (function() { return this; }).bind(scope),
                     compileMessage : true,
                     alt : id,
+                    opacity : opacity,
                     icon : {
                         iconUrl : 'assets/images/marqueurs-' + markerMap[d[0].category] + '.png',
                         iconSize : [25, 40],
