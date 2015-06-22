@@ -81,10 +81,11 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
 
         return function(data) {
             var markers = {};
+
             _.each(_.groupBy(allForCategory(), 'town'), function(d, k) {
                 var scope = $scope.$new();
                 scope.festivals = _.clone(d);
-                var id = k.replace(/-/g, '_');
+                var id = (k + '_' + markerMap[$scope.category]).replace(/-/g, '_');
                 var opacity = 0.2;
                 _.each(d, function(_d) {
                     if (_.contains(data, _d)) {
@@ -110,6 +111,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                     }
                 };
             });
+
             return markers;
         };
     })();
