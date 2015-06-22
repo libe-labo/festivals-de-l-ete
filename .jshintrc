@@ -32,6 +32,7 @@
     // Other libs
     "_": true,
     "d3": true,
-    "L": true
+    "L": true,
+    "moment": true
   }
 }

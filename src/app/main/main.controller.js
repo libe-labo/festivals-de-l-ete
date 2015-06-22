@@ -75,8 +75,8 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 town : d.Commune,
                 lon : lonlat[0],
                 lat : lonlat[1],
-                startDate : new Date(startDate[2], startDate[1] - 1, startDate[0]),
-                endDate : new Date(endDate[2], endDate[1] - 1, endDate[0]),
+                startDate : moment(new Date(startDate[2], startDate[1] - 1, startDate[0])),
+                endDate : moment(new Date(endDate[2], endDate[1] - 1, endDate[0])),
                 description : d.Texte,
                 website : d['Site Web'],
                 phoneNumber : d['Téléphone']
@@ -91,14 +91,13 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                                         L.latLng(_.max(allLats) + 0.5, _.min(allLons) - 0.5)),
             boundsCenter = bounds.getCenter();
 
-            $scope.map.center = {
-                lng : boundsCenter.lng,
-                lat : boundsCenter.lat,
-                zoom : map.getBoundsZoom(bounds)
-            };
-        });
+        var lastDate = moment(_.max(_.pluck(allData, 'endDate')));
 
-        $scope.festivals = _.clone(allData);
+        $scope.day = new Date();
+        if (moment($scope.day).isAfter(lastDate)) {
+            $scope.day = lastDate.toDate();
+        }
+    });
 
         $scope.map.markers = generateMarkersFromData($scope.festivals);
     });
