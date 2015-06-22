@@ -36,7 +36,7 @@
 
 
 html {
-    font-family: 'Proxima Nova Regular', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .browsehappy {
@@ -50,8 +50,12 @@ html {
     height: 100%;
 }
 
-md-toolbar.md-default-theme, .md-button.md-default-theme.md-primary.md-raised {
-    background-color: #c42121;
+md-toolbar {
+    font-family: "Trade Gothic Bold Cond";
+}
+
+.md-button.md-default-theme > span {
+    font-weight: 800;
 }
 
 section#main-content {
@@ -60,31 +64,32 @@ section#main-content {
     padding-top: 50px;
 }
 
-.agenda__list__item {
-    cursor: pointer;
+.agenda__list {
+    overflow-x: visible;
+    overflow-y: scroll;
+    height: 90%;
 
-    &__name {
-        font-family: "Trade Gothic Bold Cond";
+    > input[type="date"] {
+        width: 100%;
     }
 
-    > span {
-        display: block;
-        clear: both;
+    &__item {
+        cursor: pointer;
 
-        > i {
-            font-size: .6em;
+        &__name {
+            font-family: "Trade Gothic Bold Cond";
+        }
+
+        > span {
+            display: block;
+            clear: both;
+
+            > i {
+                font-size: .6em;
+            }
         }
     }
-
-    &.selected, &.selected:hover {
-        background-color: #c42121;
-    }
-
-    &:hover {
-        background-color: lighten(#c42121, 20%)
-    }
 }
-
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your less files automatically */
 // injector
