@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('festivals').controller('MainCtrl', function ($scope, $http, leafletData) {
+angular.module('festivals').controller('MainCtrl', function ($scope, $http, leafletData, $rootScope) {
     var allData;
     $scope.festivals = [];
     $scope.category = undefined;
@@ -193,6 +193,10 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 }
             });
         });
+    });
+
+    $scope.$watch('category', function() {
+            $rootScope.$broadcast('category:change', $scope.category);
     });
 
     $scope.getColorClass = (function() {
