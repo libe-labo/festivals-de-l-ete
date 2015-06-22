@@ -85,7 +85,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 var scope = $scope.$new();
                 scope.festivals = _.clone(d);
                 var id = k.replace(/-/g, '_');
-                var opacity = 0.1;
+                var opacity = 0.2;
                 _.each(d, function(_d) {
                     if (_.contains(data, _d)) {
                         opacity = 1;
