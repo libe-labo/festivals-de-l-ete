@@ -201,7 +201,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     });
 
     $scope.$watch('category', function() {
-            $rootScope.$broadcast('category:change', $scope.category);
+        $rootScope.$broadcast('category:change', $scope.category);
     });
 
     $scope.getColorClass = (function() {

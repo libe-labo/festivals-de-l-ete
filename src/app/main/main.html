@@ -19,7 +19,9 @@
                     <md-option ng-value="'Autres'">Autres</md-option>
                 </md-select>
                 <span class="color-fg agenda__list__title">Aujourd'hui</span>
-                <input type="date" ng-model="day" ng-change="changeDate()" />
+
+                <input ui-date="{changeYear:false}" ng-change="changeDate()" ng-model="day" ng-change="changeDate()" />
+
                 <div ng-repeat="festival in festivals | orderBy:'startDate'" class="agenda__list__item"
                      ng-click="selectFestival(festival.id)" layout-padding ng-class="getFestivalClass(festival)">
                     <span class="agenda__list__item__name color-fg">{{ festival.name }}</span>
