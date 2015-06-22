@@ -56,25 +56,46 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     };
 
     // Creates an array of Leaftlet Markers from an array of festivals
-    var generateMarkersFromData = function(data) {
-        var markers = {};
-        _.each(_.groupBy(data, 'town'), function(d, k) {
-            var scope = $scope.$new();
-            scope.names = _.pluck(d, 'name');
-            var id = k.replace(/-/g, '_');
-            markers[id] = {
-                lng : parseFloat(d[0].lon),
-                lat : parseFloat(d[0].lat),
-                focus : false,
-                draggable : false,
-                message : '<li ng-repeat="name in names">{{ name }}</li>',
-                getMessageScope : (function() { return this; }).bind(scope),
-                compileMessage : true,
-                alt : id
-            };
-        });
-        return markers;
-    };
+    var generateMarkersFromData = (function() {
+        var markerMap = {
+            null : '01',
+            undefined : '01',
+            'BD' : '02',
+            'Cinéma' : '03',
+            'Danse' : '04',
+            'Musique' : '05',
+            'Littérature' : '06',
+            'Photo / Art contemporain' : '07',
+            'Theâtre / Arts de la rue / Cirque' : '08',
+            'Autres' : '09'
+        };
+
+        return function(data) {
+            var markers = {};
+            _.each(_.groupBy(data, 'town'), function(d, k) {
+                var scope = $scope.$new();
+                scope.names = _.pluck(d, 'name');
+                var id = k.replace(/-/g, '_');
+                markers[id] = {
+                    lng : parseFloat(d[0].lon),
+                    lat : parseFloat(d[0].lat),
+                    focus : false,
+                    draggable : false,
+                    message : '<li ng-repeat="name in names">{{ name }}</li>',
+                    getMessageScope : (function() { return this; }).bind(scope),
+                    compileMessage : true,
+                    alt : id,
+                    icon : {
+                        iconUrl : 'assets/images/marqueurs-' + markerMap[d[0].category] + '.png',
+                        iconSize : [25, 40],
+                        iconAnchor : [12, 39],
+                        popupAnchor : [0, -39]
+                    }
+                };
+            });
+            return markers;
+        };
+    })();
 
     $scope.$on('category:change', function(event, category) {
         // If `category == null` then we want everything
