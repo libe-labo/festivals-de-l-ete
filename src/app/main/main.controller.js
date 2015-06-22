@@ -1,25 +1,39 @@
 'use strict';
 
 angular.module('festivals').controller('MainCtrl', function ($scope, $http, leafletData) {
-    /*
-    ** Data
-    */
     var allData;
     $scope.festivals = [];
+    $scope.category = undefined;
+    $scope.day = undefined;
 
     // Filter `allData` depending on key / value
-    var filterFestivals = function(key, value) {
-        if (key == null && value == null) {
-            return _.clone(allData);
-        }
+    var filterFestivals = function() {
         return _.filter(allData, function(d) {
-            return d[key] === value;
+            var isCat = $scope.category == null ? true : d.category === $scope.category;
+            var isDate = $scope.day == null ? true
+                                            : moment($scope.day).isBetween(d.startDate,
+                                                                           moment(d.endDate).add(1, 'day'));
+            return isCat && isDate;
         });
+    };
+
+    $scope.changeDate = function() {
+        $scope.festivals = filterFestivals();
+        $scope.map.markers = generateMarkersFromData($scope.festivals);
+    };
+
+    $scope.selectFestival = function(i) {
+        $scope.selectedFestival = _.clone(_.find($scope.festivals, { id : i }));
+        var marker = allMarkers[$scope.selectedFestival.town.replace(/-/g, '_')];
+        if (marker != null && !marker.getPopup()._isOpen) {
+            marker.openPopup();
+        }
     };
 
     /*
     ** Map
     */
+    var allMarkers;
     $scope.map = {
         center : {
             lng : 2.35,
@@ -45,14 +59,16 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
         _.each(_.groupBy(data, 'town'), function(d, k) {
             var scope = $scope.$new();
             scope.names = _.pluck(d, 'name');
-            markers[k.replace(/-/g, '_')] = {
+            var id = k.replace(/-/g, '_');
+            markers[id] = {
                 lng : parseFloat(d[0].lon),
                 lat : parseFloat(d[0].lat),
                 focus : false,
                 draggable : false,
                 message : '<li ng-repeat="name in names">{{ name }}</li>',
                 getMessageScope : (function() { return this; }).bind(scope),
-                compileMessage : true
+                compileMessage : true,
+                alt : id
             };
         });
         return markers;
@@ -60,16 +76,40 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
 
     $scope.$on('category:change', function(event, category) {
         // If `category == null` then we want everything
-        $scope.festivals = filterFestivals.apply(this, category == null ? [] : ['category', category]);
+        $scope.category = category;
+        $scope.festivals = filterFestivals();
         $scope.map.markers = generateMarkersFromData($scope.festivals);
     });
 
+    var initMap = function() {
+        leafletData.getMap().then(function(map) {
+            var allLons = _.pluck(allData, 'lon'),
+                allLats = _.pluck(allData, 'lat'),
+                bounds = L.latLngBounds(L.latLng(_.min(allLats) - 0.5, _.max(allLons) + 0.5),
+                                        L.latLng(_.max(allLats) + 0.5, _.min(allLons) - 0.5)),
+            boundsCenter = bounds.getCenter();
+
+            $scope.map.center = {
+                lng : boundsCenter.lng,
+                lat : boundsCenter.lat,
+                zoom : map.getBoundsZoom(bounds)
+            };
+        });
+
+        $scope.map.markers = generateMarkersFromData($scope.festivals);
+    };
+
+
+    /*
+    ** Data
+    */
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
-        allData = d3.tsv.parse(response.data, function(d) {
+        allData = d3.tsv.parse(response.data, function(d, i) {
             var lonlat = d['Lon,Lat'].split(','),
                 startDate = d['Début'].split('/'),
                 endDate = d.Fin.split('/');
             return {
+                id : i,
                 name : d['Nom du festival'],
                 category : d.Genre,
                 town : d.Commune,
@@ -83,13 +123,9 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
             };
         });
 
+        $scope.festivals = _.clone(allData);
 
-        leafletData.getMap().then(function(map) {
-            var allLons = _.pluck(allData, 'lon'),
-                allLats = _.pluck(allData, 'lat'),
-                bounds = L.latLngBounds(L.latLng(_.min(allLats) - 0.5, _.max(allLons) + 0.5),
-                                        L.latLng(_.max(allLats) + 0.5, _.min(allLons) - 0.5)),
-            boundsCenter = bounds.getCenter();
+        initMap();
 
         var lastDate = moment(_.max(_.pluck(allData, 'endDate')));
 
@@ -99,6 +135,23 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
         }
     });
 
-        $scope.map.markers = generateMarkersFromData($scope.festivals);
+    /*
+    **
+    */
+    $scope.getFestivalClass = function(festival) {
+        return {
+            selected : $scope.selectedFestival != null && festival.id === $scope.selectedFestival.id
+        };
+    };
+
+    $scope.$watch('map.markers', function() {
+        allMarkers = {};
+        leafletData.getMap().then(function(map) {
+            map.eachLayer(function(layer) {
+                if (layer.openPopup != null) {
+                    allMarkers[layer.options.alt] = layer;
+                }
+            });
+        });
     });
 });
