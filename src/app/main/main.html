@@ -40,6 +40,7 @@
                 <span><i class="fa fa-circle fa-small color-fg"></i> {{ selectedFestival.category }}</span>
                 <p>{{ selectedFestival.description }}</p>
                 <p ng-show="selectedFestival.citation.length > 0">
+                    <span class="color-fg extrabold">La raison d'y aller</span><br />
                     <span class="color-fg">{{ selectedFestival.citationName }}</span>, {{ selectedFestival.citationSub }} :<br /><em>{{ selectedFestival.citation }}</em>
                 </p>
                 <p><a ng-href="{{ selectedFestival.website }}" target="_blank" class="color-fg">En savoir plus</a></p>
