@@ -24,7 +24,6 @@
     <!-- bower:css -->
     <!-- run `gulp inject` to automatically populate bower styles dependencies -->
     <!-- endbower -->
-    <link rel="stylesheet" href="app/components/lheader/lheader.css">
     <!-- endbuild -->
 
     <!-- build:css({.tmp/serve,src}) styles/app.css -->
@@ -38,7 +37,6 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <lheader></lheader>
     <section id="main-content" ui-view></section>
 
     <!-- build:js(src) scripts/vendor.js -->
@@ -47,6 +45,9 @@
     <!-- endbower -->
     <script type="text/javascript" src="../bower_components/jquery-ui/ui/i18n/datepicker-fr.js"></script>
     <!-- endbuild -->
+
+    <!-- Header -->
+    <script type="text/javascript" src="http://www.liberation.fr/menu/script.js"></script>
 
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
     <!-- inject:js -->
