@@ -146,9 +146,7 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     */
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
         allData = d3.tsv.parse(response.data, function(d, i) {
-            var lonlat = _.map(d['Lon,Lat'].split(','), parseFloat),
-                startDate = d['Début'].substr(0, 10).split('-'),
-                endDate = d.Fin.substr(0, 10).split('-');
+            var lonlat = _.map(d['Lon,Lat'].split(','), parseFloat);
             return {
                 id : i,
                 name : d['Nom du festival'],
@@ -156,8 +154,8 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
                 town : d.Commune,
                 lon : isNaN(lonlat[0]) ? 0 : lonlat[0],
                 lat : isNaN(lonlat[1]) ? 0 : lonlat[1],
-                startDate : moment(new Date(+startDate[0], (+startDate[1]) - 1, +startDate[2])),
-                endDate : moment(new Date(+endDate[0], (+endDate[1]) - 1, +endDate[2])),
+                startDate : moment(d['Début'], ['DD/MM/YYYY']),
+                endDate : moment(d.Fin, ['DD/MM/YYYY']),
                 description : d.Texte,
                 website : (d['Site web'].indexOf('://') < 0 ? 'http://' : '') + d['Site web'],
                 phoneNumber : d['Téléphone'],
