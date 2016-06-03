@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('festivals').controller('MainCtrl', function ($scope, $http, leafletData, $rootScope) {
-    var allData;
+    var allData, allMarkers;
     $scope.festivals = [];
     $scope.category = undefined;
     $scope.day = undefined;
@@ -42,7 +42,6 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     /*
     ** Map
     */
-    var allMarkers;
     $scope.map = {
         center : {
             lng : 2.35,
@@ -147,16 +146,16 @@ angular.module('festivals').controller('MainCtrl', function ($scope, $http, leaf
     */
     $http.get('assets/tsv/festivals.tsv').then(function(response) {
         allData = d3.tsv.parse(response.data, function(d, i) {
-            var lonlat = d['Lon,Lat'].split(','),
+            var lonlat = _.map(d['Lon,Lat'].split(','), parseFloat),
                 startDate = d['Début'].substr(0, 10).split('-'),
                 endDate = d.Fin.substr(0, 10).split('-');
             return {
                 id : i,
                 name : d['Nom du festival'],
-                category : d.Genre,
+                category : d.Genre.trim(),
                 town : d.Commune,
-                lon : lonlat[0],
-                lat : lonlat[1],
+                lon : isNaN(lonlat[0]) ? 0 : lonlat[0],
+                lat : isNaN(lonlat[1]) ? 0 : lonlat[1],
                 startDate : moment(new Date(+startDate[0], (+startDate[1]) - 1, +startDate[2])),
                 endDate : moment(new Date(+endDate[0], (+endDate[1]) - 1, +endDate[2])),
                 description : d.Texte,
